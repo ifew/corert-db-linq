@@ -1,4 +1,4 @@
-# Example C# .NET Core 3 (and 2.2) Runtime (CoreRT) with connect MySQL via not using any ORM
+# Example C# .NET Core 3 (and 2.2) Runtime (CoreRT) with connect MySQL via Linq (linq2db)
 
 ## WARNING
 

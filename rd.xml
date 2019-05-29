@@ -1,0 +1,7 @@
+<Directives>
+  <Application>
+    <Assembly Name="corert-db" Dynamic="Required All" />
+    <Assembly Name="linq2db" Dynamic="Required All" />
+    <Assembly Name="System.Linq" Dynamic="Required All" />
+  </Application>
+</Directives>

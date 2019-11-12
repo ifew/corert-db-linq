@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
 using LinqToDB;
 using LinqToDB.Common;
 using LinqToDB.Mapping;
 using LinqToDB.Configuration;
 using System.Linq;
 using LinqToDB.Data;
+using System.Text.Json;
 
 namespace Member
 {
@@ -21,18 +21,25 @@ namespace Member
 
             DataConnection.DefaultSettings = new MySettings();
 
-            using (var db = new lab())
+            Console.WriteLine("Log: After Connection");
+
+            using (var db = new DBConnection())
             {
-                Console.WriteLine("Log: Before query");
-                var members = from m in db.Member
+                Console.WriteLine("Log: After get DBConnection()");
+
+                var query = from m in db.Member
                             orderby m.Id descending
                             select m;
-                var result = members.ToList();
                 
-                Console.WriteLine("Log: After query");
+                Console.WriteLine("Log: After Linq Query");
 
-                Console.WriteLine("Log: Count: " + result.Count);
-                Console.WriteLine("Log: Result: " + JsonConvert.SerializeObject(result));
+                List<Member> members = query.ToList();
+
+                Console.WriteLine("Log: After query ToList");
+
+                Console.WriteLine("Log: Count: " + members.Count );
+
+                Console.WriteLine("Log: Result: " + System.Text.Json.JsonSerializer.Serialize(members));
                 
             }
 
@@ -41,7 +48,7 @@ namespace Member
 
 
 
-    [Table(Name = "test_member")]
+    [Table(Name = "member")]
     public class Member
     {
         [PrimaryKey, Identity]
@@ -68,8 +75,8 @@ namespace Member
     {
         public IEnumerable<IDataProviderSettings> DataProviders => Enumerable.Empty<IDataProviderSettings>();
 
-        public string DefaultConfiguration => "MySQL";
-        public string DefaultDataProvider => "MySQL";
+        public string DefaultConfiguration => "Mysql";
+        public string DefaultDataProvider => "Mysql";
 
         public IEnumerable<IConnectionStringSettings> ConnectionStrings
         {
@@ -78,17 +85,28 @@ namespace Member
                 yield return
                     new ConnectionStringSettings
                     {
-                        Name = "MySQL",
-                        ProviderName = "MySQL",
+                        Name = "DBConnection",
+                        ProviderName = "MySql",
                         ConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION")
                     };
             }
         }
     }
 
-    public class lab : LinqToDB.Data.DataConnection
+    public partial class DBConnection : LinqToDB.Data.DataConnection
     {
-        public lab() : base("lab") { }
+        public DBConnection()
+		{
+			InitDataContext();
+		}
+
+		public DBConnection(string configuration)
+			: base(configuration)
+		{
+			InitDataContext();
+		}
+
+		partial void InitDataContext();
 
         public ITable<Member> Member => GetTable<Member>();
     }

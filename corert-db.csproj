@@ -21,7 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="1.0.0-alpha-*" />
     <PackageReference Include="MySqlConnector" Version="0.61.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.0-preview2.19523.17" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="linq2db.MySqlConnector" Version="3.0.0-preview.1" />
   </ItemGroup>
 </Project>
